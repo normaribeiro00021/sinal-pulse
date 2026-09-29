@@ -1,0 +1,12 @@
+"use client";
+import { Activity, ArrowUpRight, Radio, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { MiningPanel } from "@/components/mining-panel";
+import { OfferCard } from "@/components/offer-card";
+import { Sidebar } from "@/components/sidebar";
+import { mockOffers } from "@/data/mock-offers";
+
+const summaries = [{value:"14",label:"NOVOS SINAIS HOJE"},{value:"07",label:"OFERTAS ACELERANDO"},{value:"128",label:"OFERTAS MONITORADAS"},{value:"76",label:"PULSE SCORE MÉDIO"}];
+const groups = [{title:"ESCALANDO AGORA",caption:"Ofertas que ganharam tração no período.",icon:Activity,offers:[mockOffers[0]]},{title:"NOVOS SINAIS",caption:"Ofertas recém-detectadas pelo radar.",icon:Radio,offers:[mockOffers[1]]},{title:"MAIOR ACELERAÇÃO",caption:"Crescimento mais forte na base MOCK.",icon:ArrowUpRight,offers:[mockOffers[2]]},{title:"MAIOR PULSE SCORE",caption:"Maior potencial segundo o modelo V1.",icon:Sparkles,offers:[mockOffers[3]]}];
+
+export default function RadarPage() { const [realOffers, setRealOffers] = useState<typeof mockOffers>([]); const [realSummary, setRealSummary] = useState(""); return <div className="app-shell"><Sidebar/><main><header className="topbar"><div><span className="mock-label">DADOS DE DEMONSTRAÇÃO · MOCK</span><h1>Radar de oportunidades</h1><p>Encontre e acompanhe produtos digitais em movimento.</p></div><div className="profile"><i>U</i><span>Usuário<small>Plano Free · MOCK</small></span></div></header><section className="summary-grid">{summaries.map((item) => <div className="summary" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</section><MiningPanel onComplete={(offers, summary) => { setRealOffers(offers); setRealSummary(summary); }}/>{realOffers.length > 0 && <section className="real-results"><div className="real-head"><div><span className="real-badge">REAL</span><h2>Resultados da mineração</h2><p>{realSummary}</p></div></div><div className="feed">{realOffers.map((offer) => <OfferCard key={offer.id} offer={offer}/>)}</div></section>}<section className="feed">{groups.map((group) => { const Icon = group.icon; return <div className="group" key={group.title}><div className="group-head"><div><h2><Icon size={18}/>{group.title}</h2><p>{group.caption}</p></div><button>Ver todas <span>→</span></button></div>{group.offers.map((offer) => <OfferCard key={offer.id} offer={offer}/>)}</div>})}</section><footer>SINAL PULSE <span>—</span> Radar de oportunidades em movimento. <b>Dados de demonstração · MOCK</b></footer></main></div>; }
